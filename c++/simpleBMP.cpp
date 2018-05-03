@@ -1,5 +1,8 @@
 #include "simpleBMP.h"
-#include <math.h>
+#include <cmath>
+#include <string>
+#include <iostream>
+using namespace std;
 
 void otsu(uint8_t * iterbeg, uint8_t * iterend) {
 
@@ -32,8 +35,7 @@ void otsu(uint8_t * iterbeg, uint8_t * iterend) {
 			bestk = i;
 			besttaub = taubk[i];
 			numofbestk = 1;
-		}
-		else if (taubk[i] == besttaub) {
+		} else if (taubk[i] == besttaub) {
 			bestk += i;
 			numofbestk += 1;
 		}
@@ -51,11 +53,16 @@ int main(int argc, char* argv[]) {
 	}
 	ClImgBMP grayscale_img;
 	grayscale_img.LoadImage(argv[1]);
-	otsu(&grayscale_img.imgData[0], &grayscale_img.imgData[0]+grayscale_img.imgData.size());
+	
+//	otsu(&grayscale_img.imgData[0], &grayscale_img.imgData[0]+grayscale_img.imgData.size());
 
-	std::string path = argv[1];
+	string path = argv[1];
 	path.insert(path.size() - 4, "[otsu]");
 	grayscale_img.SaveImage(path.c_str());
+	
+	int sClBitMapFileHeader=sizeof(ClBitMapFileHeader);
+	int sClBitMapInfoHeader=sizeof(ClBitMapInfoHeader);
+	int simgData=grayscale_img.imgData.size()*sizeof(uint8_t);
 	return 1;
 }
 
